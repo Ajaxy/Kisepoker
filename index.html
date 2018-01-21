@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="index.css">
+    <script src="index.js"></script>
+    <title>Кисепокер</title>
+</head>
+<body>
+    <div class="start">
+        <button id="start-game">Начать</button>
+    </div>
+    <div class="container">
+        <div class="pot">
+            <span id="pot" style="position: absolute; margin-top: 30px; color: white">POT:7777777</span>
+        </div>
+        <div class="cardscontainer opponent">
+            <div class="name" id="opponent-name">Name</div>
+            <div class="cards hidden"></div>
+            <div class="cards hidden"></div>
+            <div id="opponent_stack" class="stack">
+                <span>100000</span>
+            </div>
+            <div id="opponent_bet" class="bet" style="margin-top: 130px">
+                <span style="padding-left: 60px">100</span>
+            </div>
+        </div>
+        <div class="cardscontainer dealer">
+            <div class="cards hidden"></div>
+            <div class="cards hidden"></div>
+            <div class="cards hidden"></div>
+            <div class="cards hidden"></div>
+            <div class="cards hidden"></div>
+        </div>
+
+        <div class="cardscontainer player">
+            <div class="name" id="player-name" style="padding-top: 140px">Name</div>
+            <div class="cards hidden"></div>
+            <div class="cards hidden"></div>
+            <div id="player_stack" class="stack">
+                <span>100000</span>
+            </div>
+            <div id="player_bet" class="bet">
+                <span style="padding-left: 60px">100</span>
+            </div>
+        </div>
+        <div class="buttons button">
+            <button value="check">Check</button>
+            <button value="bet">Bet</button>
+        </div>
+        <div class="buttons">
+            <button value="fold">Fold</button>
+            <button value="call">Call</button>
+            <button value="raise">Raise</button>
+            <input type="range" min="0" max="100" step="1" value="50">
+        </div>
+    </div>
+</body>
+</html>

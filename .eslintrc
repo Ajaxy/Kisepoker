@@ -1,0 +1,17 @@
+{
+  "extends": "airbnb-base",
+  "env": {
+    "browser": true
+  },
+  "rules": {
+    "indent": ["error", 4],
+    "comma-dangle": ["error", "never"],
+    "arrow-parens": ["error", "always"],
+
+    "no-plusplus": 0,
+    "no-underscore-dangle": 0,
+    "class-methods-use-this": 0,
+    "no-param-reassign": 0,
+    "no-use-before-define": 0,
+  }
+}
