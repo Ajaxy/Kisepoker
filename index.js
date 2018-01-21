@@ -1,13 +1,12 @@
 const connection = new WebSocket('ws://192.168.0.157:8080');
 
 function init() {
-    connection.addEventListener('open', event => {
+    connection.addEventListener('open', (event) => {
         isConnected = true;
-        console.log('WS Ready!')
+        console.log('WS Ready!');
     });
 
     nonDisplay(event);
-
 }
 
 function nonDisplay(event) {
@@ -19,28 +18,28 @@ function nonDisplay(event) {
             data: {
                 name: 'Name'
             }
-        }))
+        }));
     });
 }
 function typeCheck() {
-    
+
 }
 
-connection.addEventListener('message', typeCheck)
+connection.addEventListener('message', typeCheck);
 
-    // connection.addEventListener('message', event => {
-    //     console.log(JSON.parse(event.data));
-    // } )
+// connection.addEventListener('message', event => {
+//     console.log(JSON.parse(event.data));
+// } )
 
-    connection.addEventListener('error', event => {
-        console.log(error);
-    })
+connection.addEventListener('error', (event) => {
+    console.log(error);
+});
 
-    connection.addEventListener('close', event => {
-        isConnected = false;
-        console.log(event)
-        console.log(`Код закрытия соединения ${event.code}`);
-    });
+connection.addEventListener('close', (event) => {
+    isConnected = false;
+    console.log(event);
+    console.log(`Код закрытия соединения ${event.code}`);
+});
 
 
 function makeEvent(e) {
