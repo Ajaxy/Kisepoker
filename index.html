@@ -3,57 +3,112 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="index.css">
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"
+            integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+            crossorigin="anonymous">
+    </script>
     <script src="index.js"></script>
     <title>Кисепокер</title>
 </head>
 <body>
     <div class="start">
-        <button id="start-game">Начать</button>
+        <button id="start-game">Start</button>
+    </div>
+    <div id="winner" class="winner">
+        <img src="images/win.png" alt="Winner is...">
+
+        <button id="start-new-game">New game</button>
+        <p></p>
     </div>
     <div class="container">
         <div class="pot">
-            <span id="pot" style="position: absolute; margin-top: 30px; color: white">POT:7777777</span>
+            <span id="pot" style="position: absolute; margin-top: 30px; color: white">POT:0</span>
         </div>
         <div class="cardscontainer opponent">
-            <div class="name" id="opponent-name">Name</div>
-            <div class="cards hidden"></div>
-            <div class="cards hidden"></div>
-            <div id="opponent_stack" class="stack">
-                <span>100000</span>
+            <div class="popup" id="popup2">
+                <div class="popup-content">
+                    Text in Popup
+                </div>
+            </div>
+            <div class="name" id="opponent-name">Opponent</div>
+            <div class="card hidden">
+                <div class="suit"></div>
+                <div class="range"></div>
+            </div>
+            <div class="card hidden">
+                <div class="suit"></div>
+                <div class="range"></div>
+            </div>
+            <div class="stack">
+                <span id="opponent_stack">0</span>
             </div>
             <div id="opponent_bet" class="bet" style="margin-top: 130px">
-                <span style="padding-left: 60px">100</span>
+                <span>0</span>
             </div>
         </div>
         <div class="cardscontainer dealer">
-            <div class="cards hidden"></div>
-            <div class="cards hidden"></div>
-            <div class="cards hidden"></div>
-            <div class="cards hidden"></div>
-            <div class="cards hidden"></div>
+
+            <div class="card">
+                <div class="suit"></div>
+                <div class="range"></div>
+            </div>
+            <div class="card">
+                <div class="suit"></div>
+                <div class="range"></div>
+            </div>
+            <div class="card">
+                <div class="suit"></div>
+                <div class="range"></div>
+            </div>
+            <div class="card">
+                <div class="suit"></div>
+                <div class="range"></div>
+            </div>
+            <div class="card">
+                <div class="suit"></div>
+                <div class="range"></div>
+            </div>
         </div>
 
         <div class="cardscontainer player">
-            <div class="name" id="player-name" style="padding-top: 140px">Name</div>
-            <div class="cards hidden"></div>
-            <div class="cards hidden"></div>
-            <div id="player_stack" class="stack">
-                <span>100000</span>
+            <div class="popup" id="popup1">
+                <div class="popup-content">
+                    Text in Popup
+                </div>
             </div>
-            <div id="player_bet" class="bet">
-                <span style="padding-left: 60px">100</span>
+            <div class="name" id="player-name" style="padding-top: 140px">You</div>
+
+            <div class="card hidden">
+                    <div class="suit"></div>
+                    <div class="range"></div>
             </div>
-        </div>
-        <div class="buttons button">
-            <button value="check">Check</button>
-            <button value="bet">Bet</button>
-        </div>
+
+            <div class="card hidden">
+                <div class="suit"></div>
+                <div class="range">7</div>
+            </div>
+
+            </div>
+
+            <div class="stack player_stack">
+                <span id="player_stack">0</span>
+            </div>
+
+            <div id="player_bet" class="bet player_bet">
+                <span>0</span>
+            </div>
+
         <div class="buttons">
-            <button value="fold">Fold</button>
-            <button value="call">Call</button>
-            <button value="raise">Raise</button>
-            <input type="range" min="0" max="100" step="1" value="50">
+            <button id="check" value="check" class="displayed-buttons" >Check</button>
+            <button id="bet" value="bet" class="displayed-buttons">Bet</button>
+            <button id="call" value="call" class="displayed-buttons">Call</button>
+            <button id="raise" value="raise" class="displayed-buttons">Raise</button>
+            <button id="fold" value="fold" class="displayed-buttons">Fold</button>
+            <input id="input" type="range" class="displayed-buttons">
         </div>
+
+        </div>
+
     </div>
 </body>
 </html>

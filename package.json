@@ -6,13 +6,15 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint .",
-    "lint:fix": "eslint . --fix"
+    "lint:fix": "eslint . --fix",
+    "precommit": "npm run lint"
   },
   "author": "Anna Zharova",
   "license": "ISC",
   "devDependencies": {
     "eslint": "^4.16.0",
     "eslint-config-airbnb-base": "^12.1.0",
-    "eslint-plugin-import": "^2.8.0"
+    "eslint-plugin-import": "^2.8.0",
+    "husky": "^0.14.3"
   }
 }
