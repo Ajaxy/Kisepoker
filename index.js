@@ -6,7 +6,7 @@ const SUITE_CODES = ['c', 'd', 'h', 's'];
 const PLAYER_ID1 = '1';
 const PLAYER_ID2 = 'bot';
 
-const connection = new WebSocket('ws://kise-simulator.zinchuk.com');
+const connection = new WebSocket('wss://kise-simulator.zinchuk.com');
 const state = {};
 
 function init() {
