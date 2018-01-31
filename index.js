@@ -25,7 +25,6 @@ function init() {
     state.betButton = document.getElementById('bet');
     state.raiseButton = document.getElementById('raise');
     state.winner = document.getElementById('winner');
-
     state.playerAction = document.getElementById('popup1');
     state.opponentAction = document.getElementById('popup2');
 
@@ -252,7 +251,7 @@ function typeCheck(event) {
         state.pot.innerHTML = 0;
     } else if (type === 'end') {
         if (String(data.data.winnerId) === PLAYER_ID1) {
-            state.winner.lastElementChild.innerHTML = state.playerName;
+            state.winner.lastElementChild.innerHTML = state.playerName.innerHTML;
         } else {
             state.winner.lastElementChild.innerHTML = state.opponentName.innerHTML;
         }
