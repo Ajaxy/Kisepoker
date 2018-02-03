@@ -229,9 +229,9 @@ function typeCheck(event) {
         }
     } else if (type === 'showdown') {
         for (let i = 0; i < state.opponentCards.length; i++) {
-            const opponentSuites = SUITES[data.data.playersCards.bot[i][1]];
+            const opponentSuites = SUITES[data.data.playersCards[PLAYER_ID2][i][1]];
             state.opponentCards[i].firstElementChild.classList.add(`${opponentSuites}`);
-            state.opponentCards[i].lastElementChild.innerHTML = data.data.playersCards.bot[i][0];
+            state.opponentCards[i].lastElementChild.innerHTML = data.data.playersCards[PLAYER_ID2][i][0];
             state.opponentCards[i].classList.remove('hidden');
         }
 
@@ -240,10 +240,16 @@ function typeCheck(event) {
         state.playerBet.firstElementChild.innerHTML = 0;
     } else if (type === 'cheat') {
         for (let i = 0; i < state.opponentCards.length; i++) {
-            const opponentSuites = SUITES[data.data.playersCards.bot[i][1]];
+            const opponentSuites = SUITES[data.data.playersCards[PLAYER_ID2][i][1]];
             state.opponentCards[i].firstElementChild.classList.add(`${opponentSuites}`);
-            state.opponentCards[i].lastElementChild.innerHTML = data.data.playersCards.bot[i][0];
+            state.opponentCards[i].lastElementChild.innerHTML = data.data.playersCards[PLAYER_ID2][i][0];
             state.opponentCards[i].classList.remove('hidden');
+        }
+        for (let i = 0; i < state.playerCards.length; i++) {
+            const playerSuites = SUITES[data.data.playersCards[PLAYER_ID1][i][1]];
+            state.playerCards[i].firstElementChild.classList.add(`${playerSuites}`);
+            state.playerCards[i].lastElementChild.innerHTML = data.data.playersCards[PLAYER_ID1][i][0];
+            state.playerCards[i].classList.remove('hidden');
         }
     } else if (type === 'gameend') {
         if (String(data.data.winnerId) === PLAYER_ID1) {
