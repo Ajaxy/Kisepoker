@@ -45,6 +45,17 @@ function init() {
 }
 
 function nonDisplay() {
+    const demoGame = document.getElementById('demo-game');
+    demoGame.addEventListener('click', () => {
+        startView.parentNode.style.display = 'none';
+        connection.send(JSON.stringify({
+            type: 'observe',
+            data: {
+                name: 'Hero'
+            }
+        }));
+    });
+
     const startView = document.getElementById('start-game');
     startView.addEventListener('click', () => {
         startView.parentNode.style.display = 'none';
