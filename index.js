@@ -3,30 +3,29 @@ const SUITES = {
 };
 const SUITE_CODES = ['c', 'd', 'h', 's'];
 
-const PLAYER_ID1 = '1';
-const PLAYER_ID2 = 'bot';
-
 const connection = new WebSocket('wss://kise-simulator.zinchuk.com');
+const elems = {};
 const state = {};
 
 function init() {
-    state.opponentName = document.getElementById('opponent-name');
-    state.playerName = document.getElementById('player-name');
-    state.opponentStack = document.getElementById('opponent_stack');
-    state.playerStack = document.getElementById('player_stack');
-    state.pot = document.getElementById('pot');
-    state.opponentBet = document.getElementById('opponent_bet');
-    state.playerBet = document.getElementById('player_bet');
-    state.opponentCards = Array.from(document.querySelectorAll('.opponent .card'));
-    state.playerCards = Array.from(document.querySelectorAll('.player .card'));
-    state.flop = Array.from(document.querySelectorAll('.dealer .card'));
-    state.buttons = Array.from(document.querySelectorAll('.buttons button'));
-    state.inputAmount = document.getElementById('input');
-    state.betButton = document.getElementById('bet');
-    state.raiseButton = document.getElementById('raise');
-    state.winner = document.getElementById('winner');
-    state.playerAction = document.getElementById('popup1');
-    state.opponentAction = document.getElementById('popup2');
+    elems.enteredName = document.getElementById('name');
+    elems.opponentName = document.getElementById('opponent-name');
+    elems.playerName = document.getElementById('player-name');
+    elems.opponentStack = document.getElementById('opponent_stack');
+    elems.playerStack = document.getElementById('player_stack');
+    elems.pot = document.getElementById('pot');
+    elems.opponentBet = document.getElementById('opponent_bet');
+    elems.playerBet = document.getElementById('player_bet');
+    elems.opponentCards = Array.from(document.querySelectorAll('.opponent .card'));
+    elems.playerCards = Array.from(document.querySelectorAll('.player .card'));
+    elems.flop = Array.from(document.querySelectorAll('.dealer .card'));
+    elems.buttons = Array.from(document.querySelectorAll('.buttons button'));
+    elems.inputAmount = document.getElementById('input');
+    elems.betButton = document.getElementById('bet');
+    elems.raiseButton = document.getElementById('raise');
+    elems.winner = document.getElementById('winner');
+    elems.playerAction = document.getElementById('popup1');
+    elems.opponentAction = document.getElementById('popup2');
 
     connection.addEventListener('open', () => {
         console.log('WS Ready!');
@@ -34,14 +33,14 @@ function init() {
 
     nonDisplay();
 
-    state.buttons.forEach((button) => {
+    elems.buttons.forEach((button) => {
         button.addEventListener('click', (event) => {
             eventMaker(event);
         });
     });
 
-    state.inputAmount.addEventListener('change', updateButtonAmounts);
-    state.inputAmount.addEventListener('mousemove', updateButtonAmounts);
+    elems.inputAmount.addEventListener('change', updateButtonAmounts);
+    elems.inputAmount.addEventListener('mousemove', updateButtonAmounts);
 }
 
 function nonDisplay() {
@@ -58,18 +57,22 @@ function nonDisplay() {
 
     const startView = document.getElementById('start-game');
     startView.addEventListener('click', () => {
-        startView.parentNode.style.display = 'none';
-        connection.send(JSON.stringify({
-            type: 'start',
-            data: {
-                name: 'Hero'
-            }
-        }));
+        if (elems.enteredName.value.length !== 0) {
+            startView.parentNode.style.display = 'none';
+            connection.send(JSON.stringify({
+                type: 'start',
+                data: {
+                    name: elems.enteredName.value
+                }
+            }));
+        } else {
+            alert('Please, enter your name!');
+        }
     });
 
     const newGame = document.getElementById('start-new-game');
     newGame.addEventListener('click', () => {
-        state.winner.style.display = 'none';
+        elems.winner.style.display = 'none';
         connection.send(JSON.stringify({
             type: 'start',
             data: {
@@ -81,8 +84,8 @@ function nonDisplay() {
 
 
 function updateButtonAmounts() {
-    state.betButton.innerHTML = `Bet: ${state.inputAmount.value}`;
-    state.raiseButton.innerHTML = `Raise: ${state.inputAmount.value}`;
+    elems.betButton.innerHTML = `Bet: ${elems.inputAmount.value}`;
+    elems.raiseButton.innerHTML = `Raise: ${elems.inputAmount.value}`;
 }
 
 function eventMaker(event) {
@@ -90,7 +93,7 @@ function eventMaker(event) {
     data.action = event.target.value;
 
     if (data.action === 'bet' || data.action === 'raise') {
-        data.amount = state.inputAmount.value;
+        data.amount = elems.inputAmount.value;
     }
 
     connection.send(JSON.stringify({
@@ -98,181 +101,183 @@ function eventMaker(event) {
         data
     }));
 
-    state.buttons.forEach((button) => {
+    elems.buttons.forEach((button) => {
         button.classList.add('displayed-buttons');
     });
     document.querySelector('input').classList.add('displayed-buttons');
 }
 
 function handleLevel(data) {
-    if (data.data.name === 'preflop') {
+    if (data.name === 'preflop') {
         for (let i = 0; i < 2; i++) {
-            const preFlopSuites = SUITES[data.data.cards[i][1]];
+            const preFlopSuites = SUITES[data.cards[i][1]];
 
-            state.playerCards[i].firstElementChild.classList.add(`${preFlopSuites}`);
-            state.playerCards[i].lastElementChild.innerHTML = data.data.cards[i][0];
-            state.playerCards[i].classList.remove('hidden');
+            elems.playerCards[i].firstElementChild.classList.add(`${preFlopSuites}`);
+            elems.playerCards[i].lastElementChild.innerHTML = data.cards[i][0];
+            elems.playerCards[i].classList.remove('hidden');
         }
-    } else if (data.data.name === 'flop') {
+    } else if (data.name === 'flop') {
         for (let i = 0; i < 3; i++) {
-            const flopSuites = SUITES[data.data.cards[i][1]];
-            state.flop[i].firstElementChild.classList.add(`${flopSuites}`);
-            state.flop[i].lastElementChild.innerHTML = data.data.cards[i][0];
-            state.flop[i].style.visibility = 'visible';
+            const flopSuites = SUITES[data.cards[i][1]];
+            elems.flop[i].firstElementChild.classList.add(`${flopSuites}`);
+            elems.flop[i].lastElementChild.innerHTML = data.cards[i][0];
+            elems.flop[i].style.visibility = 'visible';
         }
-    } else if (data.data.name === 'turn') {
-        const turnSuite = SUITES[data.data.cards[0][1]];
-        state.flop[3].firstElementChild.classList.add(`${turnSuite}`);
-        state.flop[3].lastElementChild.innerHTML = data.data.cards[0][0];
-        state.flop[3].style.visibility = 'visible';
-    } else if (data.data.name === 'river') {
-        const riverSuite = SUITES[data.data.cards[0][1]];
-        state.flop[4].firstElementChild.classList.add(`${riverSuite}`);
-        state.flop[4].lastElementChild.innerHTML = data.data.cards[0][0];
-        state.flop[4].style.visibility = 'visible';
+    } else if (data.name === 'turn') {
+        const turnSuite = SUITES[data.cards[0][1]];
+        elems.flop[3].firstElementChild.classList.add(`${turnSuite}`);
+        elems.flop[3].lastElementChild.innerHTML = data.cards[0][0];
+        elems.flop[3].style.visibility = 'visible';
+    } else if (data.name === 'river') {
+        const riverSuite = SUITES[data.cards[0][1]];
+        elems.flop[4].firstElementChild.classList.add(`${riverSuite}`);
+        elems.flop[4].lastElementChild.innerHTML = data.cards[0][0];
+        elems.flop[4].style.visibility = 'visible';
     }
 }
 
 function typeCheck(event) {
     console.log(event.data);
-    const type = JSON.parse(event.data).type;
-    const data = JSON.parse(event.data);
+    const { type, data } = JSON.parse(event.data);
 
     if (type === 'start') {
-        if (String(data.data.players[0].playerId) === PLAYER_ID1) {
-            state.playerName.innerHTML = data.data.players[0].name;
-            state.opponentName.innerHTML = data.data.players[1].name;
-        } else {
-            state.playerName.innerHTML = data.data.players[1].name;
-            state.opponentName.innerHTML = data.data.players[0].name;
-        }
-        state.opponentStack.innerHTML = data.data.initialStack;
-        state.playerStack.innerText = data.data.initialStack;
-        state.pot.innerHTML = 'POT: 0';
-    } else if (type === 'gamestart') {
-        state.playerName.classList.remove('blink');
-        state.opponentName.classList.remove('blink');
+        state.playerId1 = data.players[0].playerId;
+        state.playerId2 = data.players[1].playerId;
 
-        state.inputAmount.setAttribute('step', data.data.smallBlind);
+        if (data.players[0].playerId === state.playerId1) {
+            elems.playerName.innerHTML = data.players[0].name;
+            elems.opponentName.innerHTML = data.players[1].name;
+        } else {
+            elems.playerName.innerHTML = data.players[1].name;
+            elems.opponentName.innerHTML = data.players[0].name;
+        }
+        elems.opponentStack.innerHTML = data.initialStack;
+        elems.playerStack.innerText = data.initialStack;
+        elems.pot.innerHTML = 'POT: 0';
+    } else if (type === 'gamestart') {
+        elems.playerName.classList.remove('blink');
+        elems.opponentName.classList.remove('blink');
+
+        elems.inputAmount.setAttribute('step', data.smallBlind);
         updateButtonAmounts();
 
-        state.playerCards.forEach((card) => {
+        elems.playerCards.forEach((card) => {
             card.classList.add('hidden');
             for (let i = 0; i < SUITE_CODES.length; i++) {
                 card.firstElementChild.classList.remove(SUITES[SUITE_CODES[i]]);
             }
         });
 
-        state.flop.forEach((card) => {
+        elems.flop.forEach((card) => {
             card.style.visibility = 'hidden';
             for (let i = 0; i < SUITE_CODES.length; i++) {
                 card.firstElementChild.classList.remove(SUITES[SUITE_CODES[i]]);
             }
         });
 
-        state.opponentCards.forEach(((card) => {
+        elems.opponentCards.forEach(((card) => {
             card.classList.add('hidden');
             for (let i = 0; i < SUITE_CODES.length; i++) {
                 card.firstElementChild.classList.remove(SUITES[SUITE_CODES[i]]);
             }
         }));
 
-        state.buttons.forEach((button) => {
+        elems.buttons.forEach((button) => {
             button.classList.add('displayed-buttons');
         });
 
         document.querySelector('input').classList.add('displayed-buttons');
 
-        state.playerStack.innerHTML = data.data.stacks[PLAYER_ID1];
-        state.opponentStack.innerHTML = data.data.stacks[PLAYER_ID2];
-        state.playerBet.firstElementChild.innerHTML = data.data.bets[PLAYER_ID1];
-        state.opponentBet.firstElementChild.innerHTML = data.data.bets[PLAYER_ID2];
+        elems.playerStack.innerHTML = data.stacks[state.playerId1];
+        elems.opponentStack.innerHTML = data.stacks[state.playerId2];
+        elems.playerBet.firstElementChild.innerHTML = data.bets[state.playerId1];
+        elems.opponentBet.firstElementChild.innerHTML = data.bets[state.playerId2];
     } else if (type === 'round') {
         Array.from(document.querySelectorAll('.popup')).forEach(((popup) => {
             popup.style.display = 'none';
         }));
 
-        if (data.data.name !== 'preflop') {
-            state.pot.innerHTML = `POT: ${data.data.pot}`;
-            state.playerBet.firstElementChild.innerHTML = 0;
-            state.opponentBet.firstElementChild.innerHTML = 0;
+        if (data.name !== 'preflop') {
+            elems.pot.innerHTML = `POT: ${data.pot}`;
+            elems.playerBet.firstElementChild.innerHTML = 0;
+            elems.opponentBet.firstElementChild.innerHTML = 0;
         }
         handleLevel(data);
     } else if (type === 'turnrequest') {
-        const actions = Object.keys(data.data.allowedTurns);
+        const actions = Object.keys(data.allowedTurns);
 
         document.querySelector('input').classList.remove('displayed-buttons');
         for (let i = 0; i < actions.length; i++) {
             document.getElementById(actions[i]).classList.remove('displayed-buttons');
 
             if (actions[i] === 'bet' || actions[i] === 'raise') {
-                const { min, max } = data.data.allowedTurns[actions[i]];
-                state.inputAmount.setAttribute('min', min);
-                state.inputAmount.setAttribute('max', max);
-                state.inputAmount.value = min;
+                const { min, max } = data.allowedTurns[actions[i]];
+                elems.inputAmount.setAttribute('min', min);
+                elems.inputAmount.setAttribute('max', max);
+                elems.inputAmount.value = min;
                 updateButtonAmounts();
             }
         }
     } else if (type === 'turn') {
-        if (String(data.data.playerId) === PLAYER_ID1) {
-            state.playerStack.innerHTML = data.data.stack;
-            state.playerBet.firstElementChild.innerHTML = data.data.bet;
-            state.playerAction.firstElementChild.innerHTML = data.data.action;
-            state.playerAction.style.display = 'inline';
-            state.opponentAction.style.display = 'none';
-        } else if (String(data.data.playerId) === PLAYER_ID2) {
-            state.opponentStack.innerHTML = data.data.stack;
-            state.opponentBet.firstElementChild.innerHTML = data.data.bet;
-            state.opponentAction.firstElementChild.innerHTML = data.data.action;
-            state.opponentAction.style.display = 'inline';
-            state.playerAction.style.display = 'none';
+        if (data.playerId === state.playerId1) {
+            elems.playerStack.innerHTML = data.stack;
+            elems.playerBet.firstElementChild.innerHTML = data.bet;
+            elems.playerAction.firstElementChild.innerHTML = data.action;
+            elems.playerAction.style.display = 'inline';
+            elems.opponentAction.style.display = 'none';
+        } else if (data.playerId === state.playerId2) {
+            elems.opponentStack.innerHTML = data.stack;
+            elems.opponentBet.firstElementChild.innerHTML = data.bet;
+            elems.opponentAction.firstElementChild.innerHTML = data.action;
+            elems.opponentAction.style.display = 'inline';
+            elems.playerAction.style.display = 'none';
         }
     } else if (type === 'showdown') {
-        for (let i = 0; i < state.opponentCards.length; i++) {
-            const opponentSuites = SUITES[data.data.playersCards[PLAYER_ID2][i][1]];
-            state.opponentCards[i].firstElementChild.classList.add(`${opponentSuites}`);
-            state.opponentCards[i].lastElementChild.innerHTML = data.data.playersCards[PLAYER_ID2][i][0];
-            state.opponentCards[i].classList.remove('hidden');
+        for (let i = 0; i < elems.opponentCards.length; i++) {
+            const opponentSuites = SUITES[data.playersCards[state.playerId2][i][1]];
+            elems.opponentCards[i].firstElementChild.classList.add(`${opponentSuites}`);
+            elems.opponentCards[i].lastElementChild.innerHTML = data.playersCards[state.playerId2][i][0];
+            elems.opponentCards[i].classList.remove('hidden');
         }
 
-        state.pot.innerHTML = `POT: ${data.data.pot}`;
-        state.opponentBet.firstElementChild.innerHTML = 0;
-        state.playerBet.firstElementChild.innerHTML = 0;
+        elems.pot.innerHTML = `POT: ${data.pot}`;
+        elems.opponentBet.firstElementChild.innerHTML = 0;
+        elems.playerBet.firstElementChild.innerHTML = 0;
     } else if (type === 'cheat') {
-        for (let i = 0; i < state.opponentCards.length; i++) {
-            const opponentSuites = SUITES[data.data.playersCards[PLAYER_ID2][i][1]];
-            state.opponentCards[i].firstElementChild.classList.add(`${opponentSuites}`);
-            state.opponentCards[i].lastElementChild.innerHTML = data.data.playersCards[PLAYER_ID2][i][0];
-            state.opponentCards[i].classList.remove('hidden');
+        for (let i = 0; i < elems.opponentCards.length; i++) {
+            const opponentSuites = SUITES[data.playersCards[state.playerId2][i][1]];
+            elems.opponentCards[i].firstElementChild.classList.add(`${opponentSuites}`);
+            elems.opponentCards[i].lastElementChild.innerHTML = data.playersCards[state.playerId2][i][0];
+            elems.opponentCards[i].classList.remove('hidden');
         }
-        for (let i = 0; i < state.playerCards.length; i++) {
-            const playerSuites = SUITES[data.data.playersCards[PLAYER_ID1][i][1]];
-            state.playerCards[i].firstElementChild.classList.add(`${playerSuites}`);
-            state.playerCards[i].lastElementChild.innerHTML = data.data.playersCards[PLAYER_ID1][i][0];
-            state.playerCards[i].classList.remove('hidden');
+        for (let i = 0; i < elems.playerCards.length; i++) {
+            const playerSuites = SUITES[data.playersCards[state.playerId1][i][1]];
+            elems.playerCards[i].firstElementChild.classList.add(`${playerSuites}`);
+            elems.playerCards[i].lastElementChild.innerHTML = data.playersCards[state.playerId1][i][0];
+            elems.playerCards[i].classList.remove('hidden');
         }
     } else if (type === 'gameend') {
-        if (String(data.data.winnerId) === PLAYER_ID1) {
-            state.playerName.classList.add('blink');
+        if (data.winnerId === state.playerId1) {
+            elems.playerName.classList.add('blink');
         } else {
-            state.opponentName.classList.add('blink');
+            elems.opponentName.classList.add('blink');
         }
 
-        state.playerAction.style.display = 'none';
-        state.opponentAction.style.display = 'none';
+        elems.playerAction.style.display = 'none';
+        elems.opponentAction.style.display = 'none';
 
-        state.playerStack.innerHTML = data.data.stacks[PLAYER_ID1];
-        state.opponentStack.innerHTML = data.data.stacks[PLAYER_ID2];
-        state.playerBet.firstElementChild.innerHTML = 0;
-        state.opponentBet.firstElementChild.innerHTML = 0;
-        state.pot.innerHTML = 0;
+        elems.playerStack.innerHTML = data.stacks[state.playerId1];
+        elems.opponentStack.innerHTML = data.stacks[state.playerId2];
+        elems.playerBet.firstElementChild.innerHTML = 0;
+        elems.opponentBet.firstElementChild.innerHTML = 0;
+        elems.pot.innerHTML = 0;
     } else if (type === 'end') {
-        if (String(data.data.winnerId) === PLAYER_ID1) {
-            state.winner.lastElementChild.innerHTML = state.playerName.innerHTML;
+        if (data.winnerId === state.playerId1) {
+            elems.winner.lastElementChild.innerHTML = elems.playerName.innerHTML;
         } else {
-            state.winner.lastElementChild.innerHTML = state.opponentName.innerHTML;
+            elems.winner.lastElementChild.innerHTML = elems.opponentName.innerHTML;
         }
-        state.winner.style.display = 'inline';
+        elems.winner.style.display = 'inline';
     }
 }
 

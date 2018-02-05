@@ -23,6 +23,21 @@ html, body {
     z-index: 1;
     display: inline;
 }
+
+#name {
+    position: absolute;
+    left: 815px;
+    top: 250px;
+    z-index: 1;
+    border: 2px solid #0f25bf;
+    border-radius: 2px;
+    font-size: 15px;
+}
+
+#name:focus {
+
+}
+
 .winner {
     position: absolute;
     left: 350px;
@@ -65,7 +80,7 @@ html, body {
 #demo-game {
     position: relative;
     bottom: 200px;
-    left: -100px;
+    left: 150px;
     top: -200px;
     width: 260px;
     height: 280px;
@@ -82,7 +97,7 @@ html, body {
 #start-game {
     position: relative;
     bottom: 200px;
-    left: 500px;
+    left: 750px;
     top: -200px;
     width: 280px;
     height: 250px;
@@ -292,7 +307,7 @@ button {
     margin-left: 127px;
 }
 
-input {
+.buttons > input {
     position: relative;
     left: 186px;
     top: -130px;
