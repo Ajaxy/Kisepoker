@@ -104,7 +104,7 @@ function eventMaker(event) {
     elems.buttons.forEach((button) => {
         button.classList.add('displayed-buttons');
     });
-    document.querySelector('input').classList.add('displayed-buttons');
+    document.getElementById('input').classList.add('displayed-buttons');
 }
 
 function handleLevel(data) {
@@ -186,7 +186,7 @@ function typeCheck(event) {
             button.classList.add('displayed-buttons');
         });
 
-        document.querySelector('input').classList.add('displayed-buttons');
+        document.getElementById('input').classList.add('displayed-buttons');
 
         elems.playerStack.innerHTML = data.stacks[state.playerId1];
         elems.opponentStack.innerHTML = data.stacks[state.playerId2];
@@ -205,8 +205,7 @@ function typeCheck(event) {
         handleLevel(data);
     } else if (type === 'turnrequest') {
         const actions = Object.keys(data.allowedTurns);
-
-        document.querySelector('input').classList.remove('displayed-buttons');
+        document.getElementById('input').classList.remove('displayed-buttons');
         for (let i = 0; i < actions.length; i++) {
             document.getElementById(actions[i]).classList.remove('displayed-buttons');
 
