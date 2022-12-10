@@ -113,25 +113,25 @@ function handleLevel(data) {
             const preFlopSuites = SUITES[data.cards[i][1]];
 
             elems.playerCards[i].firstElementChild.classList.add(`${preFlopSuites}`);
-            elems.playerCards[i].lastElementChild.innerHTML = data.cards[i][0];
+            elems.playerCards[i].lastElementChild.innerHTML = decorateCard(data.cards[i][0]);
             elems.playerCards[i].classList.remove('hidden');
         }
     } else if (data.name === 'flop') {
         for (let i = 0; i < 3; i++) {
             const flopSuites = SUITES[data.cards[i][1]];
             elems.flop[i].firstElementChild.classList.add(`${flopSuites}`);
-            elems.flop[i].lastElementChild.innerHTML = data.cards[i][0];
+            elems.flop[i].lastElementChild.innerHTML = decorateCard(data.cards[i][0]);
             elems.flop[i].style.visibility = 'visible';
         }
     } else if (data.name === 'turn') {
         const turnSuite = SUITES[data.cards[0][1]];
         elems.flop[3].firstElementChild.classList.add(`${turnSuite}`);
-        elems.flop[3].lastElementChild.innerHTML = data.cards[0][0];
+        elems.flop[3].lastElementChild.innerHTML = decorateCard(data.cards[0][0]);
         elems.flop[3].style.visibility = 'visible';
     } else if (data.name === 'river') {
         const riverSuite = SUITES[data.cards[0][1]];
         elems.flop[4].firstElementChild.classList.add(`${riverSuite}`);
-        elems.flop[4].lastElementChild.innerHTML = data.cards[0][0];
+        elems.flop[4].lastElementChild.innerHTML = decorateCard(data.cards[0][0]);
         elems.flop[4].style.visibility = 'visible';
     }
 }
@@ -235,7 +235,7 @@ function typeCheck(event) {
         for (let i = 0; i < elems.opponentCards.length; i++) {
             const opponentSuites = SUITES[data.playersCards[state.playerId2][i][1]];
             elems.opponentCards[i].firstElementChild.classList.add(`${opponentSuites}`);
-            elems.opponentCards[i].lastElementChild.innerHTML = data.playersCards[state.playerId2][i][0];
+            elems.opponentCards[i].lastElementChild.innerHTML = decorateCard(data.playersCards[state.playerId2][i][0]);
             elems.opponentCards[i].classList.remove('hidden');
         }
 
@@ -246,13 +246,13 @@ function typeCheck(event) {
         for (let i = 0; i < elems.opponentCards.length; i++) {
             const opponentSuites = SUITES[data.playersCards[state.playerId2][i][1]];
             elems.opponentCards[i].firstElementChild.classList.add(`${opponentSuites}`);
-            elems.opponentCards[i].lastElementChild.innerHTML = data.playersCards[state.playerId2][i][0];
+            elems.opponentCards[i].lastElementChild.innerHTML = decorateCard(data.playersCards[state.playerId2][i][0]);
             elems.opponentCards[i].classList.remove('hidden');
         }
         for (let i = 0; i < elems.playerCards.length; i++) {
             const playerSuites = SUITES[data.playersCards[state.playerId1][i][1]];
             elems.playerCards[i].firstElementChild.classList.add(`${playerSuites}`);
-            elems.playerCards[i].lastElementChild.innerHTML = data.playersCards[state.playerId1][i][0];
+            elems.playerCards[i].lastElementChild.innerHTML = decorateCard(data.playersCards[state.playerId1][i][0]);
             elems.playerCards[i].classList.remove('hidden');
         }
     } else if (type === 'gameend') {
@@ -278,6 +278,10 @@ function typeCheck(event) {
         }
         elems.winner.style.display = 'inline';
     }
+}
+
+function decorateCard(card) {
+    return card === 'T' ? '10' : card;
 }
 
 connection.addEventListener('message', typeCheck);
