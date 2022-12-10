@@ -5,6 +5,7 @@ html, body {
     background-color: #8c8c8c;
     background: radial-gradient(rgba(0, 0, 0, 0.42), rgba(8, 1, 7, 0.87));
     font-family: Arial;
+    overflow: hidden;
 }
 
 .demo {
