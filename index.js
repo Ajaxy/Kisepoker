@@ -271,7 +271,8 @@ function typeCheck(event) {
         elems.opponentBet.firstElementChild.innerHTML = 0;
         elems.pot.innerHTML = 0;
     } else if (type === 'end') {
-        if (data.winnerId === state.playerId1) {
+        // For some reason server returns `winnerId` as string
+        if (data.winnerId === String(state.playerId1)) {
             elems.winner.lastElementChild.innerHTML = elems.playerName.innerHTML;
         } else {
             elems.winner.lastElementChild.innerHTML = elems.opponentName.innerHTML;
